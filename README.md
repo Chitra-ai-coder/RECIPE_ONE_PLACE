@@ -15,7 +15,7 @@
 
 ## 📖 About The Project
 
-**Rasa** (hosted in the `RECIPE_ONE_PLACE` repository) is a beautifully crafted digital archive designed to showcase over 6,000 traditional Indian recipes. Built with a robust **Python/Flask backend** and a **Pandas-powered search engine**, it delivers lightning-fast data processing. 
+**Rasa** (hosted in the `RECIPE_ONE_PLACE` repository) is a beautifully crafted digital archive designed to showcase over 4,500 traditional Indian recipes. Built with a robust **Python/Flask backend** and a **Pandas-powered search engine**, it delivers lightning-fast data processing. 
 
 The frontend is meticulously designed as a "Royal Menu," featuring high-end editorial typography, a smooth curtain-reveal landing page, and a strictly enforced 5-column responsive grid. It solves common UX pitfalls by decoupling search queries from category filters, ensuring a frictionless browsing experience.
 
