@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ recipe['TranslatedRecipeName'] }} - Rasa</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,400;1,600&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- ROYAL HERITAGE PALETTE --- */
+        :root { 
+            --red: #A81C1C; 
+            --gold: #D4AF37; 
+            --off-white: #FAF8F5; 
+            --white: #FFFFFF;
+            --text-dark: #2C1A14; 
+            --text-muted: #6B4E42;
+            --border-light: #E8E0D5;
+            --font-display: 'Playfair Display', serif;
+            --font-ui: 'Plus Jakarta Sans', sans-serif;
+        }
+        
+        body { font-family: var(--font-ui); background: var(--off-white); color: var(--text-dark); line-height: 1.8; margin: 0; padding: 0; -webkit-font-smoothing: antialiased; }
+        
+        /* --- FLOATING TOP NAVIGATION --- */
+        .nav-wrapper { position: sticky; top: 15px; z-index: 100; padding: 0 2%; max-width: 1400px; margin: 0 auto; }
+        .primary-bar { 
+            display: flex; align-items: center; justify-content: space-between; padding: 12px 25px; 
+            background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px);
+            border-radius: 40px; border: 1px solid var(--border-light); 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+        }
+        
+        .back-btn { display: inline-flex; align-items: center; gap: 8px; color: var(--text-dark); text-decoration: none; font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; transition: 0.3s; }
+        .back-btn:hover { color: var(--red); }
+        .back-btn svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2; transition: transform 0.3s;}
+        .back-btn:hover svg { transform: translateX(-4px); }
+        
+        .logo { font-size: 24px; font-family: var(--font-display); font-weight: 700; color: var(--red); text-decoration: none; font-style: italic; margin-right: 20px;}
+        .logo span { color: var(--gold); }
+
+        /* --- ROYAL HEADER --- */
+        .recipe-header { max-width: 900px; margin: 60px auto 50px; text-align: center; padding: 0 5%; animation: fadeIn 0.8s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        .ornament { color: var(--gold); font-size: 16px; letter-spacing: 4px; margin-bottom: 20px; display: flex; align-items: center; justify-content: center; gap: 15px; opacity: 0.8; }
+        .ornament::before, .ornament::after { content: ''; height: 1px; width: 40px; background: var(--gold); }
+
+        .recipe-title { font-size: clamp(2.5rem, 6vw, 4rem); font-family: var(--font-display); font-weight: 700; line-height: 1.15; color: var(--red); margin: 0 0 35px 0; }
+        
+        /* Floating Pill Meta Data */
+        .meta-strip { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
+        .meta-pill { 
+            background: white; border: 1px solid var(--border-light); padding: 12px 25px; 
+            border-radius: 50px; display: flex; align-items: center; gap: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.02); transition: 0.3s;
+        }
+        .meta-pill:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(168, 28, 28, 0.08); border-color: var(--gold); }
+        .meta-label { font-size: 11px; text-transform: uppercase; letter-spacing: 2px; color: var(--text-muted); font-weight: 700; }
+        .meta-value { color: var(--red); font-size: 16px; font-family: var(--font-display); font-style: italic; font-weight: 700; }
+
+        /* --- EDITORIAL LAYOUT GRID --- */
+        .recipe-content { max-width: 1200px; margin: 0 auto; padding: 0 5% 100px; display: grid; grid-template-columns: 1fr; gap: 60px; }
+        @media (min-width: 900px) {
+            .recipe-content { grid-template-columns: 380px 1fr; gap: 80px; }
+            .ingredients-sidebar { position: sticky; top: 100px; align-self: start; } 
+        }
+
+        .section-title { font-family: var(--font-display); font-size: 26px; font-weight: 700; margin: 0 0 25px 0; color: var(--text-dark); display: flex; align-items: center; gap: 15px;}
+        .section-title::after { content: ''; flex: 1; height: 1px; background: var(--border-light); }
+
+        /* Premium Sidebar */
+        .ingredients-sidebar {
+            background: white; padding: 40px; border-radius: 20px; 
+            border: 1px solid var(--border-light); border-top: 4px solid var(--red); 
+            box-shadow: 0 10px 40px rgba(0,0,0,0.03);
+            animation: fadeIn 0.8s ease-out 0.2s backwards;
+        }
+
+        .ingredient-list { list-style: none; padding: 0; margin: 0; }
+        .ingredient-list li { padding: 14px 0; border-bottom: 1px solid var(--border-light); font-size: 15px; color: var(--text-dark); font-weight: 500; display: flex; align-items: flex-start;}
+        .ingredient-list li::before { content: '❖'; color: var(--gold); font-size: 12px; margin-right: 15px; margin-top: 4px; }
+        .ingredient-list li:last-child { border-bottom: none; padding-bottom: 0; }
+
+        /* Magazine Style Instructions */
+        .instructions-area { animation: fadeIn 0.8s ease-out 0.4s backwards; padding-top: 10px;}
+        .instruction-list { list-style: none; padding: 0; margin: 0; counter-reset: step-counter; }
+        
+        .instruction-list li { 
+            position: relative; padding-left: 55px; margin-bottom: 40px; 
+            font-size: 17px; color: var(--text-dark); text-align: justify; line-height: 1.8;
+            font-weight: 400;
+        }
+        
+        /* Elegant High-End Numerals */
+        .instruction-list li::before { 
+            counter-increment: step-counter; content: counter(step-counter) "."; 
+            position: absolute; left: 0; top: -5px; 
+            font-family: var(--font-display); font-size: 32px; font-weight: 700; font-style: italic; 
+            color: var(--red); opacity: 0.8;
+        }
+
+        /* Print Media styling for recipes */
+        @media print {
+            body { background: white; }
+            .nav-wrapper { display: none; }
+            .ingredients-sidebar { border: none; box-shadow: none; padding: 0; position: static; }
+            .recipe-content { display: block; }
+            .instruction-list li { margin-bottom: 20px; page-break-inside: avoid; }
+        }
+        @media (max-width: 768px) {
+            .meta-strip { flex-direction: column; gap: 10px; align-items: center; }
+            .meta-pill { width: 100%; justify-content: center; }
+            .recipe-title { font-size: 2.8rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="nav-wrapper">
+        <nav class="primary-bar">
+            <a href="javascript:history.back()" class="back-btn">
+                <svg viewBox="0 0 24 24"><path d="M19 12H5m7 7l-7-7 7-7"></path></svg>
+                Return to Menu
+            </a>
+            <a href="/" class="logo">Rasa.</a>
+        </nav>
+    </div>
+
+    <header class="recipe-header">
+        <div class="ornament">❖ ✦ ❖</div>
+        <h1 class="recipe-title">{{ recipe['TranslatedRecipeName'] }}</h1>
+        
+        <div class="meta-strip">
+            <div class="meta-pill">
+                <span class="meta-label">Tradition</span>
+                <span class="meta-value">{{ recipe['Cuisine'] }}</span>
+            </div>
+            <div class="meta-pill">
+                <span class="meta-label">Preparation</span>
+                <span class="meta-value">{{ recipe['TotalTimeInMins']|int }} Mins</span>
+            </div>
+            <div class="meta-pill">
+                <span class="meta-label">Ingredients</span>
+                <span class="meta-value">{{ recipe['Ingredient-count']|int }}</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="recipe-content">
+        
+        <aside class="ingredients-sidebar">
+            <h2 class="section-title">Ingredients</h2>
+            <ul class="ingredient-list">
+                {% for item in recipe['ingredients_list'] %}
+                    <li>{{ item }}</li>
+                {% endfor %}
+            </ul>
+        </aside>
+
+        <section class="instructions-area">
+            <h2 class="section-title">The Method</h2>
+            <ol class="instruction-list">
+                {% for step in recipe['instructions_list'] %}
+                    <li>{{ step }}</li>
+                {% endfor %}
+            </ol>
+        </section>
+        
+    </main>
+
+</body>
+</html>
